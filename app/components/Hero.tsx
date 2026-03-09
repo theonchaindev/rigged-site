@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
-const CA = 'EnZBMrptkTThoGtfeJFvHfoDKPa2gDVbsVe2J48uSVB2'
-const DIST_WALLET = '6sAVGFquhCw94VJtqvZCmGJSEFWcQtyRowUtukWTLGsH'
+const DIST_WALLET = '8p4QZ5NREdPoYHGQYioVEpR74DeMU7ABM6zu747Gqzij'
 
 function DistroBalance() {
   const [balance, setBalance] = useState<number | null>(null)
@@ -56,28 +55,6 @@ function DistroBalance() {
   )
 }
 
-function CopyCA() {
-  const [copied, setCopied] = useState(false)
-  const copy = () => {
-    navigator.clipboard.writeText(CA)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-  return (
-    <button
-      onClick={copy}
-      className="pixel-border flex items-center gap-4 px-5 py-3 hover:bg-[rgba(245,194,0,0.08)] transition-all"
-      style={{ background: 'rgba(13,11,0,0.75)', cursor: 'pointer' }}
-    >
-      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: 'clamp(13px, 1.4vw, 17px)', color: '#F5C200', letterSpacing: '0.04em' }}>
-        CA: {CA}
-      </span>
-      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: copied ? '#00FF41' : '#7A6108', transition: 'color 0.2s', whiteSpace: 'nowrap' }}>
-        {copied ? '✓ COPIED' : '[ COPY ]'}
-      </span>
-    </button>
-  )
-}
 
 export default function Hero() {
   return (
@@ -143,9 +120,6 @@ export default function Hero() {
 
         {/* Divider */}
         <div style={{ width: '120px', height: '3px', background: 'linear-gradient(90deg, transparent, #F5C200, transparent)', margin: '4px 0' }} />
-
-        {/* CA */}
-        <CopyCA />
 
         {/* Distro wallet — mobile only */}
         <DistroBalance />
