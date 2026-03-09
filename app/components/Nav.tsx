@@ -36,7 +36,7 @@ export default function Nav() {
           />
           <span
             style={{
-              fontFamily: "'Press Start 2P', monospace",
+              fontFamily: "'Upheaval', monospace",
               color: '#F5C200',
               fontSize: '16px',
               letterSpacing: '0.08em',
@@ -56,7 +56,7 @@ export default function Nav() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              fontFamily: "'Press Start 2P', monospace",
+              fontFamily: "'Upheaval', monospace",
               fontSize: '8px',
               color: '#7A6108',
               textDecoration: 'none',

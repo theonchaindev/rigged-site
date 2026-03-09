@@ -17,10 +17,10 @@ function PriceTag() {
 
   return (
     <div className="flex items-center gap-3">
-      <span style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '22px', color: '#F5C200', textShadow: '0 0 20px rgba(245,194,0,0.45)' }}>
+      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '22px', color: '#F5C200', textShadow: '0 0 20px rgba(245,194,0,0.45)' }}>
         ${price.toFixed(2)}
       </span>
-      <span className="flash-green" style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '10px' }}>
+      <span className="flash-green" style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px' }}>
         +150% ▲
       </span>
     </div>
@@ -41,10 +41,10 @@ function CopyCA() {
       className="pixel-border flex items-center gap-4 px-5 py-3 hover:bg-[rgba(245,194,0,0.06)] transition-all"
       style={{ background: 'rgba(13,11,0,0.75)', cursor: 'pointer' }}
     >
-      <span style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '9px', color: '#F5C200', letterSpacing: '0.06em' }}>
+      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '9px', color: '#F5C200', letterSpacing: '0.06em' }}>
         CA: {CA}
       </span>
-      <span style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '7px', color: copied ? '#00FF41' : '#7A6108', transition: 'color 0.2s', whiteSpace: 'nowrap' }}>
+      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '7px', color: copied ? '#00FF41' : '#7A6108', transition: 'color 0.2s', whiteSpace: 'nowrap' }}>
         {copied ? '✓ COPIED' : '[ COPY ]'}
       </span>
     </button>
@@ -58,7 +58,7 @@ export default function Hero() {
       {/* ── Full-width banner ── */}
       <div className="relative w-full" style={{ height: 'clamp(320px, 52vw, 640px)' }}>
         <Image
-          src="/banner.png"
+          src="/background.png"
           alt="RIGGED"
           fill
           priority

@@ -85,14 +85,14 @@ function StepCard({ step, index }: { step: typeof steps[0]; index: number }) {
         transition: `opacity 0.55s ease ${index * 0.12}s, transform 0.55s ease ${index * 0.12}s`,
       }}
     >
-      <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '28px', color: 'rgba(245,194,0,0.07)', position: 'absolute', top: '10px', right: '14px', userSelect: 'none', lineHeight: 1 }}>
+      <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: 'rgba(245,194,0,0.07)', position: 'absolute', top: '10px', right: '14px', userSelect: 'none', lineHeight: 1 }}>
         {step.num}
       </div>
       <div>{step.icon}</div>
-      <h3 style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '10px', color: '#F5C200', letterSpacing: '0.08em', lineHeight: 1.6 }}>
+      <h3 style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#F5C200', letterSpacing: '0.08em', lineHeight: 1.6 }}>
         {step.title}
       </h3>
-      <p style={{ fontFamily: "'Press Start 2P', monospace", fontSize: '7.5px', color: 'rgba(255,255,255,0.45)', lineHeight: 2.2 }}>
+      <p style={{ fontFamily: "'Upheaval', monospace", fontSize: '7.5px', color: 'rgba(255,255,255,0.45)', lineHeight: 2.2 }}>
         {step.desc}
       </p>
     </div>
@@ -106,7 +106,7 @@ export default function HowItWorks() {
 
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-14">
-          <h2 style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 'clamp(16px, 2.8vw, 26px)', color: '#F5C200', letterSpacing: '0.08em', textShadow: '4px 4px 0 #B8960C' }}>
+          <h2 style={{ fontFamily: "'Upheaval', monospace", fontSize: 'clamp(16px, 2.8vw, 26px)', color: '#F5C200', letterSpacing: '0.08em', textShadow: '4px 4px 0 #B8960C' }}>
             HOW IT WORKS
           </h2>
         </div>
