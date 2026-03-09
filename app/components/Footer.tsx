@@ -55,7 +55,7 @@ export default function Footer() {
         </div>
 
         {/* CA */}
-        <div className="flex flex-col items-center gap-5 py-10" style={{ borderTop: '2px solid rgba(58,48,0,0.5)', borderBottom: '2px solid rgba(58,48,0,0.5)' }}>
+        <div id="ca" className="flex flex-col items-center gap-5 py-10" style={{ borderTop: '2px solid rgba(58,48,0,0.5)', borderBottom: '2px solid rgba(58,48,0,0.5)' }}>
           <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: '#7A6108', letterSpacing: '0.14em' }}>
             CONTRACT ADDRESS
           </span>

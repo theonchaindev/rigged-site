@@ -46,30 +46,40 @@ export default function Nav() {
           </span>
         </a>
 
-        {/* Right side */}
-        <div className="flex items-center gap-5">
-          <a
-            href="https://meteora.ag"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              fontFamily: "'Upheaval', monospace",
-              fontSize: '14px',
-              color: '#7A6108',
-              textDecoration: 'none',
-              letterSpacing: '0.05em',
-              display: 'none',
-            }}
-            className="md:block hover:text-[#F5C200] transition-colors"
-          >
-            TRADE
+        {/* Desktop nav links */}
+        <div className="hidden md:flex items-center gap-7">
+          {[
+            { label: 'HOW IT WORKS', href: '#how-it-works' },
+            { label: 'LIVE FEED', href: '#live-feed' },
+            { label: 'CA', href: '#ca' },
+            { label: 'TRADE', href: 'https://meteora.ag', external: true },
+          ].map(({ label, href, external }) => (
+            <a
+              key={label}
+              href={href}
+              {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              style={{
+                fontFamily: "'Upheaval', monospace",
+                fontSize: '13px',
+                color: '#7A6108',
+                textDecoration: 'none',
+                letterSpacing: '0.08em',
+                transition: 'color 0.2s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#F5C200')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#7A6108')}
+            >
+              {label}
+            </a>
+          ))}
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="pixel-btn">
+            JOIN THE RIG
           </a>
-          <a
-            href="https://x.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pixel-btn"
-          >
+        </div>
+
+        {/* Mobile: just the button */}
+        <div className="md:hidden">
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="pixel-btn">
             JOIN THE RIG
           </a>
         </div>
