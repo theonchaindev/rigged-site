@@ -2,6 +2,72 @@
 
 import { useEffect, useState, useRef } from 'react'
 
+const DIST_WALLET = '6sAVGFquhCw94VJtqvZCmGJSEFWcQtyRowUtukWTLGsH'
+
+function DistributionWallet() {
+  const [balance, setBalance] = useState<number | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetch_ = () =>
+      fetch('/api/distribution-wallet')
+        .then(r => r.json())
+        .then(d => { setBalance(d.balance); setLoading(false) })
+        .catch(() => setLoading(false))
+
+    fetch_()
+    const t = setInterval(fetch_, 30000) // refresh every 30s
+    return () => clearInterval(t)
+  }, [])
+
+  const formatted = balance !== null
+    ? balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    : '—'
+
+  return (
+    <div
+      className="pixel-border pulse-gold flex flex-col md:flex-row items-center md:items-start justify-between gap-6 p-6 md:p-8"
+      style={{ background: 'rgba(26,23,0,0.85)', marginBottom: '40px' }}
+    >
+      <div className="flex flex-col gap-3">
+        <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: '#7A6108', letterSpacing: '0.18em' }}>
+          DISTRIBUTION WALLET
+        </span>
+        <div className="flex items-baseline gap-3 flex-wrap justify-center md:justify-start">
+          <span style={{ fontFamily: "'Upheaval', monospace", fontSize: 'clamp(28px, 4vw, 48px)', color: '#F5C200', textShadow: '0 0 20px rgba(245,194,0,0.4)' }}>
+            {loading ? '...' : `$${formatted}`}
+          </span>
+          <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: '#7A6108' }}>
+            USDC
+          </span>
+        </div>
+        <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.04em' }}>
+          PENDING DISTRIBUTION TO HOLDERS
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-2 items-center md:items-end">
+        <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.1em' }}>
+          WALLET
+        </span>
+        <a
+          href={`https://solscan.io/account/${DIST_WALLET}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#F5C200', textDecoration: 'none', letterSpacing: '0.03em', wordBreak: 'break-all', textAlign: 'right', maxWidth: '280px' }}
+          onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+          onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+        >
+          {DIST_WALLET.slice(0, 4)}...{DIST_WALLET.slice(-4)} ↗
+        </a>
+        <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: 'rgba(245,194,0,0.25)', letterSpacing: '0.06em' }}>
+          UPDATES EVERY 30S
+        </span>
+      </div>
+    </div>
+  )
+}
+
 const STATS = [
   { label: 'PRICE', value: '$110.00', highlight: true },
   { label: 'MARKET CAP', value: '$11.0M', highlight: false },
@@ -87,6 +153,9 @@ export default function LiveFeed() {
             LIVE FEED
           </h2>
         </div>
+
+        {/* Distribution wallet */}
+        <DistributionWallet />
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-12">
