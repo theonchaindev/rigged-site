@@ -3,6 +3,23 @@
 import { useEffect, useState, useRef } from 'react'
 
 const DIST_WALLET = '6sAVGFquhCw94VJtqvZCmGJSEFWcQtyRowUtukWTLGsH'
+const DEV_WALLET = 'XXX'
+
+function useOilPrice() {
+  const [price, setPrice] = useState<number | null>(null)
+  const [change, setChange] = useState<number | null>(null)
+  useEffect(() => {
+    const load = () =>
+      fetch('/api/oil-price')
+        .then(r => r.json())
+        .then(d => { setPrice(d.price); setChange(d.change) })
+        .catch(() => {})
+    load()
+    const t = setInterval(load, 60000)
+    return () => clearInterval(t)
+  }, [])
+  return { price, change }
+}
 
 function DistributionWallet() {
   const [balance, setBalance] = useState<number | null>(null)
@@ -68,15 +85,7 @@ function DistributionWallet() {
   )
 }
 
-const STATS = [
-  { label: 'PRICE', value: '$110.00', highlight: true },
-  { label: 'MARKET CAP', value: '$11.0M', highlight: false },
-  { label: 'TVL', value: '$3.2M', highlight: false },
-  { label: '24H VOLUME', value: '$842K', highlight: false },
-  { label: 'APY', value: '18.4%', highlight: true },
-  { label: 'HOLDERS', value: '2,847', highlight: false },
-]
-
+// Static placeholder stats (update when token launches)
 const DISTRIBUTIONS = [
   { time: '2m ago',  wallet: '7xKd...f3Rp', amount: '+$4.82' },
   { time: '8m ago',  wallet: '3mWq...9aLs', amount: '+$12.10' },
@@ -86,43 +95,11 @@ const DISTRIBUTIONS = [
   { time: '45m ago', wallet: '4pLa...s8Hv', amount: '+$6.67' },
 ]
 
-const TICKER = [
-  '$RIGGED  +150%  ▲', 'PRICE: $110.00', 'TVL: $3.2M', 'APY: 18.4%',
-  '24H VOL: $842K', 'HOLDERS: 2,847', 'METEORA × ONDO FINANCE',
-  'NEXT DISTRIBUTION: 12:34:56', 'TOTAL DISTRIBUTED: $284,731',
-].join('   ░░░   ')
-
-function StatCard({ label, value, highlight }: { label: string; value: string; highlight: boolean }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.2 })
-    if (ref.current) obs.observe(ref.current)
-    return () => obs.disconnect()
-  }, [])
-  return (
-    <div
-      ref={ref}
-      className="pixel-card flex flex-col gap-3"
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(16px)',
-        transition: 'opacity 0.45s ease, transform 0.45s ease',
-        borderColor: highlight ? '#F5C200' : '#3a3000',
-      }}
-    >
-      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: '#7A6108', letterSpacing: '0.12em' }}>
-        {label}
-      </span>
-      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: highlight ? '28px' : '22px', color: highlight ? '#F5C200' : '#fff', textShadow: highlight ? '0 0 10px rgba(245,194,0,0.35)' : 'none' }}>
-        {value}
-      </span>
-    </div>
-  )
-}
 
 export default function LiveFeed() {
   const [flash, setFlash] = useState<number | null>(null)
+  const { price: oilPrice, change: oilChange } = useOilPrice()
+
   useEffect(() => {
     const t = setInterval(() => {
       const i = Math.floor(Math.random() * DISTRIBUTIONS.length)
@@ -131,6 +108,27 @@ export default function LiveFeed() {
     }, 3000)
     return () => clearInterval(t)
   }, [])
+
+  const oilStr = oilPrice != null ? `$${oilPrice.toFixed(2)}` : '...'
+  const oilChangeStr = oilChange != null
+    ? `${oilChange >= 0 ? '+' : ''}${oilChange.toFixed(2)}%`
+    : ''
+  const oilUp = (oilChange ?? 0) >= 0
+
+  const TICKER = [
+    `USO OIL: ${oilStr} ${oilChangeStr}`, '$RIGGED • AUTOMATED OIL DISTRIBUTOR',
+    'METEORA × ONDO FINANCE', `DEV WALLET: ${DEV_WALLET}`,
+    '5% → USO OIL FUND', '1% → MARKETING & LIQUIDITY', 'BUY ON METEORA ↗',
+  ].join('   ░░░   ')
+
+  const stats = [
+    { label: 'USO OIL PRICE', value: oilStr, highlight: true, sub: oilChangeStr, subUp: oilUp },
+    { label: '$RIGGED PRICE', value: 'TBA', highlight: false },
+    { label: 'MARKET CAP', value: 'TBA', highlight: false },
+    { label: 'TOTAL FEES', value: 'TBA', highlight: false },
+    { label: '24H VOLUME', value: 'TBA', highlight: false },
+    { label: 'HOLDERS', value: 'TBA', highlight: false },
+  ]
 
   return (
     <section id="live-feed" style={{ background: '#080700', position: 'relative' }}>
@@ -159,7 +157,25 @@ export default function LiveFeed() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-12">
-          {STATS.map(s => <StatCard key={s.label} {...s} />)}
+          {stats.map(s => (
+            <div
+              key={s.label}
+              className="pixel-card flex flex-col gap-3"
+              style={{ borderColor: s.highlight ? '#F5C200' : '#3a3000' }}
+            >
+              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: '#7A6108', letterSpacing: '0.12em' }}>
+                {s.label}
+              </span>
+              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: s.highlight ? '28px' : '22px', color: s.highlight ? '#F5C200' : '#fff', textShadow: s.highlight ? '0 0 10px rgba(245,194,0,0.35)' : 'none' }}>
+                {s.value}
+              </span>
+              {'sub' in s && s.sub && (
+                <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: s.subUp ? '#00FF41' : '#ff4444' }}>
+                  {s.sub}
+                </span>
+              )}
+            </div>
+          ))}
         </div>
 
         {/* Distributions table */}
