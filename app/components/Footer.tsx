@@ -3,7 +3,7 @@
 import Image from 'next/image'
 
 const LINKS = [
-  { label: 'X / TWITTER', href: 'https://x.com' },
+  { label: 'X / TWITTER', href: 'https://x.com/RiggedDistro' },
   { label: 'METEORA', href: 'https://meteora.ag' },
   { label: 'ONDO FINANCE', href: 'https://ondo.finance' },
 ]

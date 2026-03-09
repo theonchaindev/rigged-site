@@ -72,14 +72,14 @@ export default function Nav() {
               {label}
             </a>
           ))}
-          <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="pixel-btn">
+          <a href="https://x.com/RiggedDistro" target="_blank" rel="noopener noreferrer" className="pixel-btn">
             JOIN THE RIG
           </a>
         </div>
 
         {/* Mobile: just the button */}
         <div className="md:hidden">
-          <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="pixel-btn">
+          <a href="https://x.com/RiggedDistro" target="_blank" rel="noopener noreferrer" className="pixel-btn">
             JOIN THE RIG
           </a>
         </div>
