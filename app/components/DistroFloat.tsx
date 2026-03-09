@@ -28,6 +28,7 @@ export default function DistroFloat() {
       href={`https://solscan.io/account/${DIST_WALLET}`}
       target="_blank"
       rel="noopener noreferrer"
+      className="hidden md:flex"
       style={{
         position: 'fixed',
         bottom: '24px',
@@ -37,7 +38,6 @@ export default function DistroFloat() {
         border: '4px solid #F5C200',
         boxShadow: '0 0 28px rgba(245,194,0,0.35), 6px 6px 0 #B8960C',
         padding: '20px 28px',
-        display: 'flex',
         flexDirection: 'column',
         gap: '8px',
         textDecoration: 'none',

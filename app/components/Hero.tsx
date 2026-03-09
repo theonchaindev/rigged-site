@@ -4,6 +4,57 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 const CA = 'TBA'
+const DIST_WALLET = '6sAVGFquhCw94VJtqvZCmGJSEFWcQtyRowUtukWTLGsH'
+
+function DistroBalance() {
+  const [balance, setBalance] = useState<number | null>(null)
+
+  useEffect(() => {
+    const load = () =>
+      fetch('/api/distribution-wallet')
+        .then(r => r.json())
+        .then(d => setBalance(d.balance))
+        .catch(() => {})
+    load()
+    const t = setInterval(load, 30000)
+    return () => clearInterval(t)
+  }, [])
+
+  const formatted = balance !== null
+    ? balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    : '...'
+
+  return (
+    <a
+      href={`https://solscan.io/account/${DIST_WALLET}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="md:hidden"
+      style={{
+        background: 'rgba(13,11,0,0.75)',
+        border: '2px solid #F5C200',
+        boxShadow: '0 0 16px rgba(245,194,0,0.25)',
+        padding: '12px 20px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        textDecoration: 'none',
+      }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+        <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#7A6108', letterSpacing: '0.16em' }}>
+          DISTRO WALLET
+        </span>
+        <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '22px', color: '#F5C200', textShadow: '0 0 12px rgba(245,194,0,0.5)', lineHeight: 1 }}>
+          ${formatted}
+        </span>
+      </div>
+      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.06em' }}>
+        USDC ↗
+      </span>
+    </a>
+  )
+}
 
 function CopyCA() {
   const [copied, setCopied] = useState(false)
@@ -95,6 +146,9 @@ export default function Hero() {
 
         {/* CA */}
         <CopyCA />
+
+        {/* Distro wallet — mobile only */}
+        <DistroBalance />
 
         {/* Buttons */}
         <div className="flex flex-wrap gap-4 justify-center">
