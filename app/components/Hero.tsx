@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
-const CA = 'TBA'
+const CA = 'EnZBMrptkTThoGtfeJFvHfoDKPa2gDVbsVe2J48uSVB2'
 const DIST_WALLET = '6sAVGFquhCw94VJtqvZCmGJSEFWcQtyRowUtukWTLGsH'
 
 function DistroBalance() {
