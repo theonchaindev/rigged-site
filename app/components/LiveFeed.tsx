@@ -37,7 +37,7 @@ function StatCard({ label, value, highlight }: { label: string; value: string; h
   return (
     <div
       ref={ref}
-      className="pixel-card flex flex-col gap-2"
+      className="pixel-card flex flex-col gap-3"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(16px)',
@@ -45,10 +45,10 @@ function StatCard({ label, value, highlight }: { label: string; value: string; h
         borderColor: highlight ? '#F5C200' : '#3a3000',
       }}
     >
-      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '6px', color: '#7A6108', letterSpacing: '0.14em' }}>
+      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: '#7A6108', letterSpacing: '0.12em' }}>
         {label}
       </span>
-      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: highlight ? '16px' : '13px', color: highlight ? '#F5C200' : '#fff', textShadow: highlight ? '0 0 10px rgba(245,194,0,0.35)' : 'none' }}>
+      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: highlight ? '28px' : '22px', color: highlight ? '#F5C200' : '#fff', textShadow: highlight ? '0 0 10px rgba(245,194,0,0.35)' : 'none' }}>
         {value}
       </span>
     </div>
@@ -71,10 +71,10 @@ export default function LiveFeed() {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #F5C200, transparent)' }} />
 
       {/* Ticker */}
-      <div style={{ background: '#F5C200', borderBottom: '3px solid #B8960C', overflow: 'hidden', padding: '9px 0' }}>
+      <div style={{ background: '#F5C200', borderBottom: '3px solid #B8960C', overflow: 'hidden', padding: '10px 0' }}>
         <div className="ticker-track">
           {[TICKER, TICKER].map((t, i) => (
-            <span key={i} style={{ fontFamily: "'Upheaval', monospace", fontSize: '8px', color: '#0D0B00', whiteSpace: 'nowrap', paddingRight: '80px', letterSpacing: '0.07em' }}>
+            <span key={i} style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: '#0D0B00', whiteSpace: 'nowrap', paddingRight: '80px', letterSpacing: '0.06em' }}>
               {t}
             </span>
           ))}
@@ -83,7 +83,7 @@ export default function LiveFeed() {
 
       <div className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
-          <h2 style={{ fontFamily: "'Upheaval', monospace", fontSize: 'clamp(16px, 2.5vw, 24px)', color: '#F5C200', letterSpacing: '0.1em', textShadow: '4px 4px 0 #B8960C' }}>
+          <h2 style={{ fontFamily: "'Upheaval', monospace", fontSize: 'clamp(28px, 4vw, 44px)', color: '#F5C200', letterSpacing: '0.1em', textShadow: '4px 4px 0 #B8960C' }}>
             LIVE FEED
           </h2>
         </div>
@@ -95,15 +95,13 @@ export default function LiveFeed() {
 
         {/* Distributions table */}
         <div className="pixel-border" style={{ background: 'rgba(26,23,0,0.7)' }}>
-          {/* Header */}
-          <div className="grid grid-cols-3 gap-4 px-6 py-3" style={{ borderBottom: '2px solid #3a3000', background: 'rgba(245,194,0,0.04)' }}>
+          <div className="grid grid-cols-3 gap-4 px-6 py-4" style={{ borderBottom: '2px solid #3a3000', background: 'rgba(245,194,0,0.04)' }}>
             {['TIME', 'WALLET', 'AMOUNT'].map(h => (
-              <span key={h} style={{ fontFamily: "'Upheaval', monospace", fontSize: '7px', color: '#7A6108', letterSpacing: '0.1em' }}>
+              <span key={h} style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#7A6108', letterSpacing: '0.1em' }}>
                 {h}
               </span>
             ))}
           </div>
-          {/* Rows */}
           {DISTRIBUTIONS.map((row, i) => (
             <div
               key={i}
@@ -114,15 +112,14 @@ export default function LiveFeed() {
                 transition: 'background 0.3s',
               }}
             >
-              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '7px', color: 'rgba(255,255,255,0.28)' }}>{row.time}</span>
-              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '7px', color: 'rgba(255,255,255,0.55)' }}>{row.wallet}</span>
-              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '7px', color: '#00FF41' }}>{row.amount}</span>
+              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: 'rgba(255,255,255,0.28)' }}>{row.time}</span>
+              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: 'rgba(255,255,255,0.55)' }}>{row.wallet}</span>
+              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#00FF41' }}>{row.amount}</span>
             </div>
           ))}
-          {/* Footer */}
-          <div className="px-6 py-3 flex items-center justify-between" style={{ borderTop: '2px solid #3a3000' }}>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '6px', color: '#7A6108' }}>LIVE • METEORA DLMM</span>
-            <a href="https://meteora.ag" target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Upheaval', monospace", fontSize: '6px', color: '#F5C200', textDecoration: 'none' }}>
+          <div className="px-6 py-4 flex items-center justify-between" style={{ borderTop: '2px solid #3a3000' }}>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: '#7A6108' }}>LIVE • METEORA DLMM</span>
+            <a href="https://meteora.ag" target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: '#F5C200', textDecoration: 'none' }}>
               VIEW POOL →
             </a>
           </div>
