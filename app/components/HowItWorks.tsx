@@ -31,8 +31,8 @@ const steps = [
         <rect x="32" y="20" width="4" height="8" fill="#F5C200"/>
       </svg>
     ),
-    title: 'POOL LIQUIDITY',
-    desc: 'Protocol auto-deposits into Meteora DLMM pools — earning swap fees 24/7.',
+    title: '6% TAX',
+    desc: 'Every trade carries a 6% tax — automatically split and routed on-chain. No manual steps.',
   },
   {
     num: '03',
@@ -45,8 +45,8 @@ const steps = [
         <rect x="4" y="4" width="2" height="36" fill="#7A6108"/>
       </svg>
     ),
-    title: 'ONDO YIELD',
-    desc: 'Capital routes into Ondo Finance RWA products generating institutional oil-stock yield.',
+    title: 'OIL FUND',
+    desc: '5% auto-converts to the United States Oil Fund (USO) token — real oil exposure for every holder.',
   },
   {
     num: '04',
@@ -58,7 +58,7 @@ const steps = [
       </svg>
     ),
     title: 'EARN DAILY',
-    desc: 'Yields auto-distribute to holders. No staking, no claiming — just hold.',
+    desc: '5% distributes to holders as oil yield. 1% fuels marketing & liquidity to grow the rig.',
   },
 ]
 
@@ -109,6 +109,36 @@ export default function HowItWorks() {
             HOW IT WORKS
           </h2>
         </div>
+
+        {/* Tax breakdown banner */}
+        <div className="pixel-border mb-10" style={{ background: 'rgba(26,23,0,0.9)', padding: '24px 32px' }}>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
+            <div className="text-center">
+              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '42px', color: '#F5C200', textShadow: '0 0 20px rgba(245,194,0,0.5)', lineHeight: 1 }}>6%</span>
+              <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: '#7A6108', letterSpacing: '0.12em', marginTop: '6px' }}>TRADE TAX</div>
+            </div>
+            <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '24px', color: '#3a3000' }} className="hidden md:block">=</div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="pixel-border text-center" style={{ background: 'rgba(0,255,65,0.04)', borderColor: '#00FF41', padding: '14px 24px' }}>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#00FF41', lineHeight: 1 }}>5%</div>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', marginTop: '6px' }}>OIL FUND</div>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#7A6108', letterSpacing: '0.04em', marginTop: '4px' }}>→ HOLDERS</div>
+              </div>
+              <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '20px', color: '#3a3000', display: 'flex', alignItems: 'center' }}>+</div>
+              <div className="pixel-border text-center" style={{ background: 'rgba(245,194,0,0.04)', borderColor: '#B8960C', padding: '14px 24px' }}>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#F5C200', lineHeight: 1 }}>1%</div>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', marginTop: '6px' }}>MARKETING</div>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#7A6108', letterSpacing: '0.04em', marginTop: '4px' }}>& LIQUIDITY</div>
+              </div>
+            </div>
+          </div>
+          <div className="text-center mt-5">
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.06em' }}>
+              USO TOKEN: rpydAzWd...adxondo
+            </span>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map((step, i) => <StepCard key={step.num} step={step} index={i} />)}
         </div>
