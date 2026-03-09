@@ -3,6 +3,7 @@ import Hero from "./components/Hero";
 import HowItWorks from "./components/HowItWorks";
 import LiveFeed from "./components/LiveFeed";
 import Footer from "./components/Footer";
+import DistroFloat from "./components/DistroFloat";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <LiveFeed />
       </main>
       <Footer />
+      <DistroFloat />
     </>
   );
 }
