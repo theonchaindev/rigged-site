@@ -111,31 +111,88 @@ export default function HowItWorks() {
         </div>
 
         {/* Tax breakdown banner */}
-        <div className="pixel-border mb-10" style={{ background: 'rgba(26,23,0,0.9)', padding: '24px 32px' }}>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
-            <div className="text-center">
-              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '42px', color: '#F5C200', textShadow: '0 0 20px rgba(245,194,0,0.5)', lineHeight: 1 }}>6%</span>
-              <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: '#7A6108', letterSpacing: '0.12em', marginTop: '6px' }}>TRADE TAX</div>
-            </div>
-            <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '24px', color: '#3a3000' }} className="hidden md:block">=</div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="pixel-border text-center" style={{ background: 'rgba(0,255,65,0.04)', borderColor: '#00FF41', padding: '14px 24px' }}>
-                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#00FF41', lineHeight: 1 }}>5%</div>
-                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', marginTop: '6px' }}>OIL FUND</div>
-                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#7A6108', letterSpacing: '0.04em', marginTop: '4px' }}>→ HOLDERS</div>
-              </div>
-              <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '20px', color: '#3a3000', display: 'flex', alignItems: 'center' }}>+</div>
-              <div className="pixel-border text-center" style={{ background: 'rgba(245,194,0,0.04)', borderColor: '#B8960C', padding: '14px 24px' }}>
-                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#F5C200', lineHeight: 1 }}>1%</div>
-                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', marginTop: '6px' }}>MARKETING</div>
-                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#7A6108', letterSpacing: '0.04em', marginTop: '4px' }}>& LIQUIDITY</div>
-              </div>
-            </div>
+        <div className="mb-12" style={{
+          background: 'linear-gradient(135deg, rgba(26,23,0,0.95) 0%, rgba(13,11,0,0.98) 100%)',
+          border: '3px solid #B8960C',
+          boxShadow: '0 0 40px rgba(245,194,0,0.12), inset 0 0 60px rgba(0,0,0,0.4)',
+          padding: '36px 40px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          {/* corner accents */}
+          {[['top','left'],['top','right'],['bottom','left'],['bottom','right']].map(([v,h]) => (
+            <div key={`${v}${h}`} style={{
+              position: 'absolute', [v]: 0, [h]: 0,
+              width: '18px', height: '18px',
+              borderTop: v === 'top' ? '3px solid #F5C200' : 'none',
+              borderBottom: v === 'bottom' ? '3px solid #F5C200' : 'none',
+              borderLeft: h === 'left' ? '3px solid #F5C200' : 'none',
+              borderRight: h === 'right' ? '3px solid #F5C200' : 'none',
+            }} />
+          ))}
+
+          <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.2em', textAlign: 'center', marginBottom: '28px' }}>
+            TAX STRUCTURE
           </div>
-          <div className="text-center mt-5">
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.06em' }}>
-              USO TOKEN: rpydAzWd...adxondo
-            </span>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-0">
+            {/* 6% pill */}
+            <div style={{ textAlign: 'center', padding: '0 32px' }}>
+              <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '64px', color: '#F5C200', textShadow: '0 0 30px rgba(245,194,0,0.6), 4px 4px 0 #B8960C', lineHeight: 1 }}>6%</div>
+              <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#7A6108', letterSpacing: '0.14em', marginTop: '8px' }}>ON EVERY TRADE</div>
+            </div>
+
+            {/* arrow */}
+            <div className="flex md:flex-col items-center gap-2 px-4 py-4">
+              <div style={{ width: '40px', height: '2px', background: 'linear-gradient(90deg, #3a3000, #F5C200)' }} className="md:hidden" />
+              <div style={{ height: '40px', width: '2px', background: 'linear-gradient(180deg, #3a3000, #F5C200)' }} className="hidden md:block" />
+              <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '16px', color: '#F5C200' }}
+                className="md:rotate-90">▶</div>
+            </div>
+
+            {/* split cards */}
+            <div className="flex flex-col sm:flex-row gap-4 flex-1 max-w-lg">
+              {/* 5% oil fund */}
+              <div style={{
+                flex: 1,
+                background: 'rgba(0,255,65,0.05)',
+                border: '2px solid rgba(0,255,65,0.35)',
+                boxShadow: '0 0 20px rgba(0,255,65,0.08)',
+                padding: '20px',
+                textAlign: 'center',
+              }}>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '40px', color: '#00FF41', textShadow: '0 0 16px rgba(0,255,65,0.5)', lineHeight: 1 }}>5%</div>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#fff', letterSpacing: '0.08em', marginTop: '10px' }}>OIL FUND</div>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#00FF41', letterSpacing: '0.06em', marginTop: '6px' }}>→ HOLDERS</div>
+                <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid rgba(0,255,65,0.15)' }}>
+                  <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#7A6108', letterSpacing: '0.04em', wordBreak: 'break-all' }}>
+                    USO: rpydAzWd...adxondo
+                  </div>
+                </div>
+              </div>
+
+              {/* divider */}
+              <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '18px', color: '#3a3000', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 4px' }}>+</div>
+
+              {/* 1% marketing */}
+              <div style={{
+                flex: 1,
+                background: 'rgba(245,194,0,0.04)',
+                border: '2px solid rgba(184,150,12,0.4)',
+                boxShadow: '0 0 20px rgba(245,194,0,0.06)',
+                padding: '20px',
+                textAlign: 'center',
+              }}>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '40px', color: '#F5C200', textShadow: '0 0 16px rgba(245,194,0,0.4)', lineHeight: 1 }}>1%</div>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#fff', letterSpacing: '0.08em', marginTop: '10px' }}>MARKETING</div>
+                <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#F5C200', letterSpacing: '0.06em', marginTop: '6px' }}>& LIQUIDITY</div>
+                <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid rgba(245,194,0,0.12)' }}>
+                  <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#7A6108', letterSpacing: '0.04em' }}>
+                    GROWTH WALLET
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
