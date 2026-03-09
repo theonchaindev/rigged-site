@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -25,12 +26,19 @@ export default function Nav() {
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-3 group">
+        <a href="#" className="flex items-center gap-2 group">
+          <Image
+            src="/barrel.png"
+            alt="RIGGED"
+            width={36}
+            height={36}
+            style={{ imageRendering: 'pixelated', filter: 'drop-shadow(0 0 6px rgba(245,194,0,0.4))' }}
+          />
           <span
             style={{
               fontFamily: "'Press Start 2P', monospace",
               color: '#F5C200',
-              fontSize: '18px',
+              fontSize: '16px',
               letterSpacing: '0.08em',
               textShadow: '0 0 20px rgba(245,194,0,0.4)',
               transition: 'text-shadow 0.3s',
@@ -38,18 +46,6 @@ export default function Nav() {
             className="group-hover:[text-shadow:0_0_30px_rgba(245,194,0,0.8)]"
           >
             RIGGED
-          </span>
-          <span
-            style={{
-              fontFamily: "'Press Start 2P', monospace",
-              fontSize: '6px',
-              color: '#7A6108',
-              letterSpacing: '0.15em',
-              display: 'none',
-            }}
-            className="sm:block"
-          >
-            AUTOMATED OIL STOCK DISTRIBUTOR
           </span>
         </a>
 
