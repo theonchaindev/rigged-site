@@ -186,11 +186,6 @@ export default function HowItWorks() {
                 <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '40px', color: '#F5C200', textShadow: '0 0 16px rgba(245,194,0,0.4)', lineHeight: 1 }}>1%</div>
                 <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#fff', letterSpacing: '0.08em', marginTop: '10px' }}>MARKETING</div>
                 <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#F5C200', letterSpacing: '0.06em', marginTop: '6px' }}>& LIQUIDITY</div>
-                <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid rgba(245,194,0,0.12)' }}>
-                  <div style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: '#7A6108', letterSpacing: '0.04em' }}>
-                    GROWTH WALLET
-                  </div>
-                </div>
               </div>
             </div>
           </div>

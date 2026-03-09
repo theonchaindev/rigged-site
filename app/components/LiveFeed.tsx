@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from 'react'
 
 const DIST_WALLET = '6sAVGFquhCw94VJtqvZCmGJSEFWcQtyRowUtukWTLGsH'
-const DEV_WALLET = 'XXX'
 
 function useOilPrice() {
   const [price, setPrice] = useState<number | null>(null)
@@ -117,8 +116,7 @@ export default function LiveFeed() {
 
   const TICKER = [
     `USO OIL: ${oilStr} ${oilChangeStr}`, '$RIGGED • AUTOMATED OIL DISTRIBUTOR',
-    'METEORA × ONDO FINANCE', `DEV WALLET: ${DEV_WALLET}`,
-    '5% → USO OIL FUND', '1% → MARKETING & LIQUIDITY', 'BUY ON METEORA ↗',
+    'METEORA × ONDO FINANCE', '5% → USO OIL FUND', '1% → MARKETING & LIQUIDITY', 'BUY ON METEORA ↗',
   ].join('   ░░░   ')
 
   const stats = [
