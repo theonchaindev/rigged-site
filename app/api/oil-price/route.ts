@@ -6,7 +6,7 @@ export async function GET() {
       'https://query1.finance.yahoo.com/v8/finance/chart/USO?interval=1d&range=1d',
       {
         headers: { 'User-Agent': 'Mozilla/5.0' },
-        next: { revalidate: 60 }, // cache 60s
+        next: { revalidate: 30 }, // cache 30s
       }
     )
     const data = await res.json()

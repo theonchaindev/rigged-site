@@ -14,7 +14,7 @@ function useOilPrice() {
         .then(d => { setPrice(d.price); setChange(d.change) })
         .catch(() => {})
     load()
-    const t = setInterval(load, 60000)
+    const t = setInterval(load, 30000)
     return () => clearInterval(t)
   }, [])
   return { price, change }
@@ -147,9 +147,9 @@ export default function LiveFeed() {
           </div>
         </a>
 
-        {/* Stats grid — 3 columns */}
+        {/* Stats row — oil price, mcap, volume */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-14">
-          {/* USO Oil Price */}
+          {/* USO Oil Price — live */}
           <div style={{
             background: 'rgba(26,23,0,0.8)',
             border: '2px solid rgba(0,255,65,0.3)',
@@ -168,7 +168,7 @@ export default function LiveFeed() {
             </span>
           </div>
 
-          {/* $RIGGED Price */}
+          {/* Market Cap — waiting for CA */}
           <div style={{
             background: 'rgba(26,23,0,0.8)',
             border: '2px solid rgba(184,150,12,0.25)',
@@ -178,42 +178,12 @@ export default function LiveFeed() {
             flexDirection: 'column',
             gap: '8px',
           }}>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>$RIGGED PRICE</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.25)', lineHeight: 1 }}>—</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.5)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
-          </div>
-
-          {/* Market Cap */}
-          <div style={{
-            background: 'rgba(26,23,0,0.8)',
-            border: '2px solid rgba(184,150,12,0.25)',
-            borderTop: '3px solid #B8960C',
-            padding: '24px 28px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>MARKET CAP</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.25)', lineHeight: 1 }}>—</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.5)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.2)', lineHeight: 1 }}>—</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.4)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
           </div>
 
-          {/* Total Fees */}
-          <div style={{
-            background: 'rgba(26,23,0,0.8)',
-            border: '2px solid rgba(184,150,12,0.25)',
-            borderTop: '3px solid #B8960C',
-            padding: '24px 28px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>TOTAL FEES</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.25)', lineHeight: 1 }}>—</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.5)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
-          </div>
-
-          {/* 24H Volume */}
+          {/* 24H Volume — waiting for CA */}
           <div style={{
             background: 'rgba(26,23,0,0.8)',
             border: '2px solid rgba(184,150,12,0.25)',
@@ -224,23 +194,8 @@ export default function LiveFeed() {
             gap: '8px',
           }}>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>24H VOLUME</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.25)', lineHeight: 1 }}>—</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.5)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
-          </div>
-
-          {/* Holders */}
-          <div style={{
-            background: 'rgba(26,23,0,0.8)',
-            border: '2px solid rgba(184,150,12,0.25)',
-            borderTop: '3px solid #B8960C',
-            padding: '24px 28px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>HOLDERS</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.25)', lineHeight: 1 }}>—</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.5)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.2)', lineHeight: 1 }}>—</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.4)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
           </div>
         </div>
 
