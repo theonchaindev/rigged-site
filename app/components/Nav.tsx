@@ -51,7 +51,6 @@ export default function Nav() {
           {[
             { label: 'HOW IT WORKS', href: '#how-it-works' },
             { label: 'LIVE FEED', href: '#live-feed' },
-            { label: 'CA', href: '#ca' },
             { label: 'TRADE', href: 'https://meteora.ag', external: true },
           ].map(({ label, href, external }) => (
             <a

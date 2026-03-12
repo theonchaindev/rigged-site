@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 const DIST_WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
+const CA = 'EnZBMrptkTThoGtfeJFvHfoDKPa2gDVbsVe2J48uSVB2'
 
 function DistroBalance() {
   const [balance, setBalance] = useState<number | null>(null)
@@ -55,6 +56,20 @@ function DistroBalance() {
   )
 }
 
+
+function CopyCAButton() {
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard.writeText(CA)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  return (
+    <button onClick={copy} className="pixel-btn" style={{ cursor: 'pointer', border: 'none' }}>
+      {copied ? '✓ COPIED!' : 'COPY CA'}
+    </button>
+  )
+}
 
 export default function Hero() {
   return (
@@ -126,9 +141,7 @@ export default function Hero() {
 
         {/* Buttons */}
         <div className="flex flex-wrap gap-4 justify-center">
-          <a href="https://meteora.ag" target="_blank" rel="noopener noreferrer" className="pixel-btn">
-            BUY $RIGGED
-          </a>
+          <CopyCAButton />
           <a href="#how-it-works" className="pixel-btn pixel-btn-outline">
             HOW IT WORKS
           </a>
