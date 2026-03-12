@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 
-const DIST_WALLET = '6sAVGFquhCw94VJtqvZCmGJSEFWcQtyRowUtukWTLGsH'
+const DIST_WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
 
 function useOilPrice() {
   const [price, setPrice] = useState<number | null>(null)

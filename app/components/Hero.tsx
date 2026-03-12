@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
-const DIST_WALLET = '8p4QZ5NREdPoYHGQYioVEpR74DeMU7ABM6zu747Gqzij'
+const DIST_WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
 
 function DistroBalance() {
   const [balance, setBalance] = useState<number | null>(null)
