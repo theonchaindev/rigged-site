@@ -15,7 +15,7 @@ const steps = [
       </svg>
     ),
     title: 'BUY $RIGGED',
-    desc: 'Grab $RIGGED on Meteora. Connect your wallet and load up — no whitelists, no minimums.',
+    desc: '$RIGGED is available on any Solana trading platform — no whitelists, no minimums.',
   },
   {
     num: '02',
@@ -57,8 +57,8 @@ const steps = [
         <circle cx="24" cy="24" r="14" stroke="#B8960C" strokeWidth="1" fill="none" strokeDasharray="4 4"/>
       </svg>
     ),
-    title: 'EARN DAILY',
-    desc: 'Oil yield distributes daily to all holders. 1% funds marketing and liquidity to grow the rig.',
+    title: 'EARN EVERY 10 MINS',
+    desc: 'Fees are converted to oil stocks and paid out to holders every 10 minutes — automatically, on-chain.',
   },
 ]
 

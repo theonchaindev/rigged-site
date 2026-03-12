@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 const DIST_WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
 
@@ -49,14 +50,29 @@ export default function LiveFeed() {
     ? distroBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     : '—'
 
-  const TICKER = [
-    `USO OIL: ${oilStr} ${oilChangeStr}`,
-    '$RIGGED • AUTOMATED OIL DISTRIBUTOR',
-    'METEORA × ONDO FINANCE',
-    '5% → USO OIL FUND',
-    '1% → MARKETING & LIQUIDITY',
-    'BUY ON METEORA ↗',
-  ].join('   ░░░   ')
+  const tickerItems = [
+    // Logo + name
+    <span key="brand" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', paddingRight: '48px' }}>
+      <Image src="/barrel.png" alt="" width={18} height={18} style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+      <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: '#0D0B00', letterSpacing: '0.08em' }}>RIGGED</span>
+    </span>,
+    <span key="sep1" style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: 'rgba(13,11,0,0.4)', paddingRight: '48px' }}>░░░</span>,
+    // Oil price
+    <span key="oil" style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: '#0D0B00', whiteSpace: 'nowrap', paddingRight: '48px', letterSpacing: '0.06em' }}>
+      USO OIL: {oilStr} <span style={{ color: oilUp ? '#006600' : '#880000' }}>{oilChangeStr}</span>
+    </span>,
+    <span key="sep2" style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: 'rgba(13,11,0,0.4)', paddingRight: '48px' }}>░░░</span>,
+    // MCAP
+    <span key="mcap" style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: '#0D0B00', whiteSpace: 'nowrap', paddingRight: '48px', letterSpacing: '0.06em' }}>
+      MCAP: —
+    </span>,
+    <span key="sep3" style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: 'rgba(13,11,0,0.4)', paddingRight: '48px' }}>░░░</span>,
+    // Tagline
+    <span key="tag" style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: '#0D0B00', whiteSpace: 'nowrap', paddingRight: '48px', letterSpacing: '0.06em' }}>
+      AUTOMATED OIL STOCK DISTRIBUTOR
+    </span>,
+    <span key="sep4" style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: 'rgba(13,11,0,0.4)', paddingRight: '48px' }}>░░░</span>,
+  ]
 
   return (
     <section id="live-feed" style={{ background: '#080700', position: 'relative' }}>
@@ -64,12 +80,8 @@ export default function LiveFeed() {
 
       {/* Ticker */}
       <div style={{ background: '#F5C200', borderBottom: '3px solid #B8960C', overflow: 'hidden', padding: '10px 0' }}>
-        <div className="ticker-track">
-          {[TICKER, TICKER].map((t, i) => (
-            <span key={i} style={{ fontFamily: "'Upheaval', monospace", fontSize: '14px', color: '#0D0B00', whiteSpace: 'nowrap', paddingRight: '80px', letterSpacing: '0.06em' }}>
-              {t}
-            </span>
-          ))}
+        <div className="ticker-track" style={{ display: 'flex', alignItems: 'center' }}>
+          {[...tickerItems, ...tickerItems]}
         </div>
       </div>
 
