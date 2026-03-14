@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-const DIST_WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
+const DIST_WALLET = 'AD19Xv3k96nGdC7hGEYVgogihgsv4pf4njr6z96V1Crx'
 
 export default function DistroFloat() {
   const [balance, setBalance] = useState<number | null>(null)

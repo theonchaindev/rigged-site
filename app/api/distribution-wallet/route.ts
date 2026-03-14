@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-const WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
+const WALLET = 'AD19Xv3k96nGdC7hGEYVgogihgsv4pf4njr6z96V1Crx'
 const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
 const RPC = 'https://api.mainnet-beta.solana.com'
 

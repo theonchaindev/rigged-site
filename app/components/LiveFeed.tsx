@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
-const DIST_WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
+const DIST_WALLET = 'AD19Xv3k96nGdC7hGEYVgogihgsv4pf4njr6z96V1Crx'
 
 function useOilPrice() {
   const [price, setPrice] = useState<number | null>(null)
@@ -36,9 +36,25 @@ function useDistroBalance() {
   return balance
 }
 
+function useSwapTotal() {
+  const [total, setTotal] = useState<number | null>(null)
+  useEffect(() => {
+    const load = () =>
+      fetch('/api/swap-tracker')
+        .then(r => r.json())
+        .then(d => setTotal(d.total))
+        .catch(() => {})
+    load()
+    const t = setInterval(load, 60000)
+    return () => clearInterval(t)
+  }, [])
+  return total
+}
+
 export default function LiveFeed() {
   const { price: oilPrice, change: oilChange } = useOilPrice()
   const distroBalance = useDistroBalance()
+  const swapTotal = useSwapTotal()
 
   const oilStr = oilPrice != null ? `$${oilPrice.toFixed(2)}` : '—'
   const oilChangeStr = oilChange != null
@@ -48,6 +64,10 @@ export default function LiveFeed() {
 
   const distroStr = distroBalance != null
     ? distroBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    : '—'
+
+  const swapStr = swapTotal != null
+    ? `$${swapTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
     : '—'
 
   const tickerItems = [
@@ -159,8 +179,8 @@ export default function LiveFeed() {
           </div>
         </a>
 
-        {/* Stats row — oil price, mcap, volume */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-14">
+        {/* Stats row — oil price, swapped to oil, mcap, volume */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
           {/* USO Oil Price — live */}
           <div style={{
             background: 'rgba(26,23,0,0.8)',
@@ -178,6 +198,23 @@ export default function LiveFeed() {
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: oilUp ? '#00FF41' : '#ff5555', letterSpacing: '0.06em' }}>
               {oilChangeStr} 24H
             </span>
+          </div>
+
+          {/* USDC → USO swapped */}
+          <div style={{
+            background: 'rgba(26,23,0,0.8)',
+            border: '2px solid rgba(0,255,65,0.2)',
+            borderTop: '3px solid #00FF41',
+            padding: '24px 28px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px',
+          }}>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>CONVERTED TO OIL</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#00FF41', textShadow: '0 0 12px rgba(0,255,65,0.35)', lineHeight: 1 }}>
+              {swapStr}
+            </span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>USDC → USO (LAST 50 TXS)</span>
           </div>
 
           {/* Market Cap — waiting for CA */}
