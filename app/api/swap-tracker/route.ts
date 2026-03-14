@@ -26,30 +26,30 @@ export async function GET() {
       params: [WALLET, { limit: 50 }],
     })
 
-    const signatures: string[] = (sigData?.result ?? []).map(
-      (s: { signature: string }) => s.signature
-    )
+    type SigEntry = { signature: string; blockTime?: number }
+    const sigEntries: SigEntry[] = sigData?.result ?? []
 
-    if (signatures.length === 0) {
-      return NextResponse.json({ total: 0, txCount: 0 })
+    if (sigEntries.length === 0) {
+      return NextResponse.json({ total: 0, swapCount: 0, swaps: [] })
     }
 
     // Fetch all transactions in parallel
     const txDatas = await Promise.all(
-      signatures.map(sig =>
+      sigEntries.map(s =>
         rpc({
           jsonrpc: '2.0', id: 1,
           method: 'getTransaction',
-          params: [sig, { encoding: 'jsonParsed', maxSupportedTransactionVersion: 0 }],
+          params: [s.signature, { encoding: 'jsonParsed', maxSupportedTransactionVersion: 0 }],
         })
       )
     )
 
     let totalUsdcSwapped = 0
     let swapCount = 0
+    const swaps: { sig: string; blockTime: number; usdcAmount: number; usoAmount: number }[] = []
 
-    for (const txData of txDatas) {
-      const tx = txData?.result
+    for (let i = 0; i < txDatas.length; i++) {
+      const tx = txDatas[i]?.result
       if (!tx?.meta) continue
 
       type TokenBalance = {
@@ -77,17 +77,26 @@ export async function GET() {
 
       // Swap detected: USDC spent, USO received
       if (usdcDelta < -0.01 && usoDelta > 0) {
-        totalUsdcSwapped += Math.abs(usdcDelta)
+        const usdcAmt = Math.round(Math.abs(usdcDelta) * 100) / 100
+        const usoAmt = Math.round(usoDelta * 1000) / 1000
+        totalUsdcSwapped += usdcAmt
         swapCount++
+        swaps.push({
+          sig: sigEntries[i].signature,
+          blockTime: tx.blockTime ?? sigEntries[i].blockTime ?? 0,
+          usdcAmount: usdcAmt,
+          usoAmount: usoAmt,
+        })
       }
     }
 
     return NextResponse.json({
       total: Math.round(totalUsdcSwapped * 100) / 100,
       swapCount,
+      swaps: swaps.slice(0, 10), // most recent 10 swaps for the feed
       wallet: WALLET,
     })
   } catch {
-    return NextResponse.json({ total: 0, swapCount: 0 })
+    return NextResponse.json({ total: 0, swapCount: 0, swaps: [] })
   }
 }

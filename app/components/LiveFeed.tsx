@@ -36,25 +36,36 @@ function useDistroBalance() {
   return balance
 }
 
-function useSwapTotal() {
+type Swap = { sig: string; blockTime: number; usdcAmount: number; usoAmount: number }
+
+function useSwapData() {
   const [total, setTotal] = useState<number | null>(null)
+  const [swaps, setSwaps] = useState<Swap[]>([])
   useEffect(() => {
     const load = () =>
       fetch('/api/swap-tracker')
         .then(r => r.json())
-        .then(d => setTotal(d.total))
+        .then(d => { setTotal(d.total); setSwaps(d.swaps ?? []) })
         .catch(() => {})
     load()
     const t = setInterval(load, 60000)
     return () => clearInterval(t)
   }, [])
-  return total
+  return { total, swaps }
+}
+
+function timeAgo(blockTime: number) {
+  const diff = Math.floor(Date.now() / 1000) - blockTime
+  if (diff < 60) return `${diff}s ago`
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`
+  return `${Math.floor(diff / 86400)}d ago`
 }
 
 export default function LiveFeed() {
   const { price: oilPrice, change: oilChange } = useOilPrice()
   const distroBalance = useDistroBalance()
-  const swapTotal = useSwapTotal()
+  const { total: swapTotal, swaps } = useSwapData()
 
   const oilStr = oilPrice != null ? `$${oilPrice.toFixed(2)}` : '—'
   const oilChangeStr = oilChange != null
@@ -246,6 +257,86 @@ export default function LiveFeed() {
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.2)', lineHeight: 1 }}>—</span>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.4)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
           </div>
+        </div>
+
+        {/* Transaction feed */}
+        <div style={{
+          background: 'rgba(26,23,0,0.8)',
+          border: '2px solid rgba(184,150,12,0.3)',
+          borderTop: '3px solid #F5C200',
+          marginBottom: '40px',
+          overflow: 'hidden',
+        }}>
+          {/* Table header */}
+          <div style={{
+            background: 'rgba(245,194,0,0.05)',
+            borderBottom: '1px solid rgba(184,150,12,0.25)',
+            padding: '12px 24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.2em' }}>
+              USDC → USO SWAPS
+            </span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: 'rgba(184,150,12,0.4)', letterSpacing: '0.1em' }}>
+              LIVE • UPDATES 60S
+            </span>
+          </div>
+
+          {/* Column headers */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr 1fr',
+            padding: '10px 24px',
+            borderBottom: '1px solid rgba(58,48,0,0.5)',
+          }}>
+            {['TIME', 'USDC SPENT', 'USO RECEIVED', 'TX'].map(h => (
+              <span key={h} style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.12em' }}>{h}</span>
+            ))}
+          </div>
+
+          {/* Rows */}
+          {swaps.length === 0 ? (
+            <div style={{ padding: '32px 24px', textAlign: 'center' }}>
+              <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: 'rgba(122,97,8,0.4)', letterSpacing: '0.1em' }}>
+                NO SWAPS DETECTED YET
+              </span>
+            </div>
+          ) : (
+            swaps.map((swap, i) => (
+              <div
+                key={swap.sig}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                  padding: '14px 24px',
+                  borderBottom: i < swaps.length - 1 ? '1px solid rgba(58,48,0,0.35)' : 'none',
+                  alignItems: 'center',
+                }}
+              >
+                <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '12px', color: 'rgba(255,255,255,0.45)' }}>
+                  {swap.blockTime ? timeAgo(swap.blockTime) : '—'}
+                </span>
+                <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#F5C200' }}>
+                  ${swap.usdcAmount.toFixed(2)}
+                </span>
+                <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#00FF41' }}>
+                  {swap.usoAmount.toFixed(3)}
+                </span>
+                <a
+                  href={`https://solscan.io/tx/${swap.sig}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(245,194,0,0.55)', textDecoration: 'none', letterSpacing: '0.04em' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#F5C200')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(245,194,0,0.55)')}
+                >
+                  {swap.sig.slice(0, 6)}...↗
+                </a>
+              </div>
+            ))
+          )}
         </div>
 
         {/* CTA */}
