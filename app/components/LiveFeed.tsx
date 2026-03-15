@@ -221,11 +221,11 @@ export default function LiveFeed() {
             flexDirection: 'column',
             gap: '8px',
           }}>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>CONVERTED TO OIL</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>TOTAL BARRELS DISTRIBUTED</span>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#00FF41', textShadow: '0 0 12px rgba(0,255,65,0.35)', lineHeight: 1 }}>
               {swapStr}
             </span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>USDC → USO (LAST 50 TXS)</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>USDC SWAPPED TO OIL STOCK</span>
           </div>
 
           {/* Market Cap — waiting for CA */}
@@ -277,7 +277,7 @@ export default function LiveFeed() {
             justifyContent: 'space-between',
           }}>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.2em' }}>
-              USDC → USO SWAPS
+              BARREL DISTRIBUTION FEED
             </span>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '10px', color: 'rgba(184,150,12,0.4)', letterSpacing: '0.1em' }}>
               LIVE • UPDATES 60S
