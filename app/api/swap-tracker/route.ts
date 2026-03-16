@@ -43,6 +43,7 @@ export async function GET() {
     )
 
     let totalSolSwapped = 0
+    let totalUsdcReceived = 0
     let swapCount = 0
     const swaps: { sig: string; blockTime: number; solAmount: number; usdcAmount: number }[] = []
 
@@ -91,6 +92,7 @@ export async function GET() {
         const solAmt = Math.round(Math.abs(solDelta) * 1000) / 1000
         const usdcAmt = Math.round(usdcDelta * 100) / 100
         totalSolSwapped += solAmt
+        totalUsdcReceived += usdcAmt
         swapCount++
         swaps.push({
           sig: sigEntries[i].signature,
@@ -102,7 +104,8 @@ export async function GET() {
     }
 
     return NextResponse.json({
-      total: Math.round(totalSolSwapped * 1000) / 1000,
+      totalSol: Math.round(totalSolSwapped * 1000) / 1000,
+      totalUsdc: Math.round(totalUsdcReceived * 100) / 100,
       swapCount,
       swaps: swaps.slice(0, 10),
       wallet: WALLET,

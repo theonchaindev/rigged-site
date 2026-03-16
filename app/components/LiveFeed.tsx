@@ -36,22 +36,38 @@ function useDistroBalance() {
   return balance
 }
 
+function useSolBalance() {
+  const [sol, setSol] = useState<number | null>(null)
+  useEffect(() => {
+    const load = () =>
+      fetch('/api/sol-balance')
+        .then(r => r.json())
+        .then(d => setSol(d.sol))
+        .catch(() => {})
+    load()
+    const t = setInterval(load, 30000)
+    return () => clearInterval(t)
+  }, [])
+  return sol
+}
+
 type Swap = { sig: string; blockTime: number; solAmount: number; usdcAmount: number }
 
 function useSwapData() {
-  const [total, setTotal] = useState<number | null>(null)
+  const [totalSol, setTotalSol] = useState<number | null>(null)
+  const [totalUsdc, setTotalUsdc] = useState<number | null>(null)
   const [swaps, setSwaps] = useState<Swap[]>([])
   useEffect(() => {
     const load = () =>
       fetch('/api/swap-tracker')
         .then(r => r.json())
-        .then(d => { setTotal(d.total); setSwaps(d.swaps ?? []) })
+        .then(d => { setTotalSol(d.totalSol); setTotalUsdc(d.totalUsdc); setSwaps(d.swaps ?? []) })
         .catch(() => {})
     load()
     const t = setInterval(load, 60000)
     return () => clearInterval(t)
   }, [])
-  return { total, swaps }
+  return { totalSol, totalUsdc, swaps }
 }
 
 function timeAgo(blockTime: number) {
@@ -65,7 +81,8 @@ function timeAgo(blockTime: number) {
 export default function LiveFeed() {
   const { price: oilPrice, change: oilChange } = useOilPrice()
   const distroBalance = useDistroBalance()
-  const { total: swapTotal, swaps } = useSwapData()
+  const solBalance = useSolBalance()
+  const { totalSol, totalUsdc, swaps } = useSwapData()
 
   const oilStr = oilPrice != null ? `$${oilPrice.toFixed(2)}` : '—'
   const oilChangeStr = oilChange != null
@@ -77,8 +94,16 @@ export default function LiveFeed() {
     ? distroBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     : '—'
 
-  const swapStr = swapTotal != null
-    ? `◎${swapTotal.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}`
+  const solBalStr = solBalance != null
+    ? `◎${solBalance.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}`
+    : '—'
+
+  const totalSolStr = totalSol != null
+    ? `◎${totalSol.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}`
+    : '—'
+
+  const totalUsdcStr = totalUsdc != null
+    ? `$${totalUsdc.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
     : '—'
 
   const tickerItems = [
@@ -190,69 +215,45 @@ export default function LiveFeed() {
           </div>
         </a>
 
-        {/* Stats row — oil price, swapped to oil, mcap, volume */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
-          {/* USO Oil Price — live */}
-          <div style={{
-            background: 'rgba(26,23,0,0.8)',
-            border: '2px solid rgba(0,255,65,0.3)',
-            borderTop: '3px solid #00FF41',
-            padding: '24px 28px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}>
+        {/* Stats row 1 — live on-chain data */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          {/* USO Oil Price */}
+          <div style={{ background: 'rgba(26,23,0,0.8)', border: '2px solid rgba(0,255,65,0.3)', borderTop: '3px solid #00FF41', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>USO OIL PRICE</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: '#00FF41', textShadow: '0 0 16px rgba(0,255,65,0.4)', lineHeight: 1 }}>
-              {oilStr}
-            </span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: oilUp ? '#00FF41' : '#ff5555', letterSpacing: '0.06em' }}>
-              {oilChangeStr} 24H
-            </span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: '#00FF41', textShadow: '0 0 16px rgba(0,255,65,0.4)', lineHeight: 1 }}>{oilStr}</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: oilUp ? '#00FF41' : '#ff5555', letterSpacing: '0.06em' }}>{oilChangeStr} 24H</span>
           </div>
 
-          {/* USDC → USO swapped */}
-          <div style={{
-            background: 'rgba(26,23,0,0.8)',
-            border: '2px solid rgba(0,255,65,0.2)',
-            borderTop: '3px solid #00FF41',
-            padding: '24px 28px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>TOTAL SOL → USDC</span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#00FF41', textShadow: '0 0 12px rgba(0,255,65,0.35)', lineHeight: 1 }}>
-              {swapStr}
-            </span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>SOL SWAPPED TO USDC</span>
+          {/* SOL Balance */}
+          <div style={{ background: 'rgba(26,23,0,0.8)', border: '2px solid rgba(0,255,65,0.3)', borderTop: '3px solid #00FF41', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>WALLET SOL</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: '#00FF41', textShadow: '0 0 16px rgba(0,255,65,0.4)', lineHeight: 1 }}>{solBalStr}</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>CURRENT BALANCE</span>
           </div>
 
-          {/* Market Cap — waiting for CA */}
-          <div style={{
-            background: 'rgba(26,23,0,0.8)',
-            border: '2px solid rgba(184,150,12,0.25)',
-            borderTop: '3px solid #F5C200',
-            padding: '24px 28px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}>
+          {/* Total SOL swapped */}
+          <div style={{ background: 'rgba(26,23,0,0.8)', border: '2px solid rgba(0,255,65,0.2)', borderTop: '3px solid #00FF41', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>SOL SWAPPED</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#00FF41', textShadow: '0 0 12px rgba(0,255,65,0.35)', lineHeight: 1 }}>{totalSolStr}</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>TO USDC (LAST 50 TXS)</span>
+          </div>
+
+          {/* Total USDC received */}
+          <div style={{ background: 'rgba(26,23,0,0.8)', border: '2px solid rgba(0,255,65,0.2)', borderTop: '3px solid #00FF41', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>USDC RECEIVED</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#00FF41', textShadow: '0 0 12px rgba(0,255,65,0.35)', lineHeight: 1 }}>{totalUsdcStr}</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>FROM SOL SWAPS</span>
+          </div>
+        </div>
+
+        {/* Stats row 2 — placeholders */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-14">
+          <div style={{ background: 'rgba(26,23,0,0.8)', border: '2px solid rgba(184,150,12,0.25)', borderTop: '3px solid #F5C200', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>MARKET CAP</span>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.2)', lineHeight: 1 }}>—</span>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.4)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
           </div>
-
-          {/* 24H Volume — waiting for CA */}
-          <div style={{
-            background: 'rgba(26,23,0,0.8)',
-            border: '2px solid rgba(184,150,12,0.25)',
-            borderTop: '3px solid #B8960C',
-            padding: '24px 28px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}>
+          <div style={{ background: 'rgba(26,23,0,0.8)', border: '2px solid rgba(184,150,12,0.25)', borderTop: '3px solid #B8960C', padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>24H VOLUME</span>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '36px', color: 'rgba(255,255,255,0.2)', lineHeight: 1 }}>—</span>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(184,150,12,0.4)', letterSpacing: '0.12em' }}>LAUNCHING SOON</span>
