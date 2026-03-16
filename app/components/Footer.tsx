@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 
-const CA = 'EnZBMrptkTThoGtfeJFvHfoDKPa2gDVbsVe2J48uSVB2'
+const CA = 'A8kWdqhGzoX4iEpvNYcuEB6ehESzjeC3XG6uHZ63M7Bs'
 
 const LINKS = [
   { label: 'X / TWITTER', href: 'https://x.com/RiggedDistro' },

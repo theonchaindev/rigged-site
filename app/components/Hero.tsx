@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 const DIST_WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
-const CA = 'EnZBMrptkTThoGtfeJFvHfoDKPa2gDVbsVe2J48uSVB2'
+const CA = 'A8kWdqhGzoX4iEpvNYcuEB6ehESzjeC3XG6uHZ63M7Bs'
 
 function DistroBalance() {
   const [balance, setBalance] = useState<number | null>(null)
