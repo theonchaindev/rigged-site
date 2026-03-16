@@ -36,7 +36,7 @@ function useDistroBalance() {
   return balance
 }
 
-type Swap = { sig: string; blockTime: number; usdcAmount: number; usoAmount: number }
+type Swap = { sig: string; blockTime: number; solAmount: number; usdcAmount: number }
 
 function useSwapData() {
   const [total, setTotal] = useState<number | null>(null)
@@ -78,7 +78,7 @@ export default function LiveFeed() {
     : '—'
 
   const swapStr = swapTotal != null
-    ? `$${swapTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    ? `◎${swapTotal.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}`
     : '—'
 
   const tickerItems = [
@@ -221,11 +221,11 @@ export default function LiveFeed() {
             flexDirection: 'column',
             gap: '8px',
           }}>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>TOTAL BARRELS DISTRIBUTED</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.18em' }}>TOTAL SOL → USDC</span>
             <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '28px', color: '#00FF41', textShadow: '0 0 12px rgba(0,255,65,0.35)', lineHeight: 1 }}>
               {swapStr}
             </span>
-            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>USDC SWAPPED TO OIL STOCK</span>
+            <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: 'rgba(0,255,65,0.5)', letterSpacing: '0.1em' }}>SOL SWAPPED TO USDC</span>
           </div>
 
           {/* Market Cap — waiting for CA */}
@@ -291,7 +291,7 @@ export default function LiveFeed() {
             padding: '10px 24px',
             borderBottom: '1px solid rgba(58,48,0,0.5)',
           }}>
-            {['TIME', 'USDC SPENT', 'USO RECEIVED', 'TX'].map(h => (
+            {['TIME', 'SOL SPENT', 'USDC RECEIVED', 'TX'].map(h => (
               <span key={h} style={{ fontFamily: "'Upheaval', monospace", fontSize: '11px', color: '#7A6108', letterSpacing: '0.12em' }}>{h}</span>
             ))}
           </div>
@@ -300,7 +300,7 @@ export default function LiveFeed() {
           {swaps.length === 0 ? (
             <div style={{ padding: '32px 24px', textAlign: 'center' }}>
               <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: 'rgba(122,97,8,0.4)', letterSpacing: '0.1em' }}>
-                NO SWAPS DETECTED YET
+                NO TRANSACTIONS DETECTED YET
               </span>
             </div>
           ) : (
@@ -319,10 +319,10 @@ export default function LiveFeed() {
                   {swap.blockTime ? timeAgo(swap.blockTime) : '—'}
                 </span>
                 <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#F5C200' }}>
-                  ${swap.usdcAmount.toFixed(2)}
+                  ◎{swap.solAmount.toFixed(3)}
                 </span>
                 <span style={{ fontFamily: "'Upheaval', monospace", fontSize: '13px', color: '#00FF41' }}>
-                  {swap.usoAmount.toFixed(3)}
+                  ${swap.usdcAmount.toFixed(2)}
                 </span>
                 <a
                   href={`https://solscan.io/tx/${swap.sig}`}

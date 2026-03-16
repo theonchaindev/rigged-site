@@ -4,8 +4,8 @@ export const revalidate = 60 // cache 60s
 
 const WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
 const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
-const USO_MINT = 'rpydAzWdCy85HEmoQkH5PVxYtDYQWjmLxgHHadxondo'
 const RPC = 'https://api.mainnet-beta.solana.com'
+const LAMPORTS = 1_000_000_000
 
 async function rpc(body: object) {
   const res = await fetch(RPC, {
@@ -19,7 +19,6 @@ async function rpc(body: object) {
 
 export async function GET() {
   try {
-    // Get last 50 transaction signatures for the wallet
     const sigData = await rpc({
       jsonrpc: '2.0', id: 1,
       method: 'getSignaturesForAddress',
@@ -33,7 +32,6 @@ export async function GET() {
       return NextResponse.json({ total: 0, swapCount: 0, swaps: [] })
     }
 
-    // Fetch all transactions in parallel
     const txDatas = await Promise.all(
       sigEntries.map(s =>
         rpc({
@@ -44,14 +42,25 @@ export async function GET() {
       )
     )
 
-    let totalUsdcSwapped = 0
+    let totalSolSwapped = 0
     let swapCount = 0
-    const swaps: { sig: string; blockTime: number; usdcAmount: number; usoAmount: number }[] = []
+    const swaps: { sig: string; blockTime: number; solAmount: number; usdcAmount: number }[] = []
 
     for (let i = 0; i < txDatas.length; i++) {
       const tx = txDatas[i]?.result
       if (!tx?.meta) continue
 
+      // Find wallet's index in the transaction accounts
+      const accountKeys: { pubkey: string }[] = tx.transaction?.message?.accountKeys ?? []
+      const walletIndex = accountKeys.findIndex((k: { pubkey: string }) => k.pubkey === WALLET)
+      if (walletIndex === -1) continue
+
+      // SOL balance delta (includes fee, but good enough signal)
+      const preSol = (tx.meta.preBalances[walletIndex] ?? 0) / LAMPORTS
+      const postSol = (tx.meta.postBalances[walletIndex] ?? 0) / LAMPORTS
+      const solDelta = postSol - preSol // negative = SOL spent
+
+      // USDC balance delta
       type TokenBalance = {
         accountIndex: number
         mint: string
@@ -63,43 +72,39 @@ export async function GET() {
       const postBals: TokenBalance[] = tx.meta.postTokenBalances ?? []
 
       let usdcDelta = 0
-      let usoDelta = 0
 
       for (const pre of preBals) {
-        if (pre.owner !== WALLET) continue
+        if (pre.owner !== WALLET || pre.mint !== USDC_MINT) continue
         const post = postBals.find(p => p.accountIndex === pre.accountIndex)
-        const delta = (post?.uiTokenAmount.uiAmount ?? 0) - (pre.uiTokenAmount.uiAmount ?? 0)
-        if (pre.mint === USDC_MINT) usdcDelta += delta
-        if (pre.mint === USO_MINT) usoDelta += delta
+        usdcDelta += (post?.uiTokenAmount.uiAmount ?? 0) - (pre.uiTokenAmount.uiAmount ?? 0)
       }
 
-      // Handle new stock token accounts (no pre-balance = wallet receiving for first time)
+      // Handle new USDC token account (first time receiving USDC)
       for (const post of postBals) {
-        if (post.owner !== WALLET) continue
-        if (post.mint !== USO_MINT) continue
+        if (post.owner !== WALLET || post.mint !== USDC_MINT) continue
         const hasPre = preBals.some(p => p.accountIndex === post.accountIndex)
-        if (!hasPre) usoDelta += post.uiTokenAmount.uiAmount ?? 0
+        if (!hasPre) usdcDelta += post.uiTokenAmount.uiAmount ?? 0
       }
 
-      // Swap detected: USDC spent, USO received
-      if (usdcDelta < -0.01 && usoDelta > 0) {
-        const usdcAmt = Math.round(Math.abs(usdcDelta) * 100) / 100
-        const usoAmt = Math.round(usoDelta * 1000) / 1000
-        totalUsdcSwapped += usdcAmt
+      // Swap detected: SOL spent, USDC received
+      if (solDelta < -0.001 && usdcDelta > 0.01) {
+        const solAmt = Math.round(Math.abs(solDelta) * 1000) / 1000
+        const usdcAmt = Math.round(usdcDelta * 100) / 100
+        totalSolSwapped += solAmt
         swapCount++
         swaps.push({
           sig: sigEntries[i].signature,
           blockTime: tx.blockTime ?? sigEntries[i].blockTime ?? 0,
+          solAmount: solAmt,
           usdcAmount: usdcAmt,
-          usoAmount: usoAmt,
         })
       }
     }
 
     return NextResponse.json({
-      total: Math.round(totalUsdcSwapped * 100) / 100,
+      total: Math.round(totalSolSwapped * 1000) / 1000,
       swapCount,
-      swaps: swaps.slice(0, 10), // most recent 10 swaps for the feed
+      swaps: swaps.slice(0, 10),
       wallet: WALLET,
     })
   } catch {
