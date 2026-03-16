@@ -4,7 +4,7 @@ export const revalidate = 60 // cache 60s
 
 const WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
 const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
-const USO_MINT = 'rpydAzWdCy85HEmoQkH5PVxYtDYQWjmLxgHHadxondo'
+const USO_MINT = 'A8kWdqhGzoX4iEpvNYcuEB6ehESzjeC3XG6uHZ63M7Bs'
 const RPC = 'https://api.mainnet-beta.solana.com'
 
 async function rpc(body: object) {
@@ -68,11 +68,17 @@ export async function GET() {
       for (const pre of preBals) {
         if (pre.owner !== WALLET) continue
         const post = postBals.find(p => p.accountIndex === pre.accountIndex)
-        if (!post) continue
-
-        const delta = (post.uiTokenAmount.uiAmount ?? 0) - (pre.uiTokenAmount.uiAmount ?? 0)
+        const delta = (post?.uiTokenAmount.uiAmount ?? 0) - (pre.uiTokenAmount.uiAmount ?? 0)
         if (pre.mint === USDC_MINT) usdcDelta += delta
         if (pre.mint === USO_MINT) usoDelta += delta
+      }
+
+      // Handle new stock token accounts (no pre-balance = wallet receiving for first time)
+      for (const post of postBals) {
+        if (post.owner !== WALLET) continue
+        if (post.mint !== USO_MINT) continue
+        const hasPre = preBals.some(p => p.accountIndex === post.accountIndex)
+        if (!hasPre) usoDelta += post.uiTokenAmount.uiAmount ?? 0
       }
 
       // Swap detected: USDC spent, USO received
