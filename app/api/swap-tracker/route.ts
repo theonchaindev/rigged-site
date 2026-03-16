@@ -4,7 +4,7 @@ export const revalidate = 60 // cache 60s
 
 const WALLET = 'oiLzcmVU9jemJpwJCpULeEwWf4Eisow4EEWdK4yJFSH'
 const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
-const USO_MINT = 'A8kWdqhGzoX4iEpvNYcuEB6ehESzjeC3XG6uHZ63M7Bs'
+const USO_MINT = 'rpydAzWdCy85HEmoQkH5PVxYtDYQWjmLxgHHadxondo'
 const RPC = 'https://api.mainnet-beta.solana.com'
 
 async function rpc(body: object) {
