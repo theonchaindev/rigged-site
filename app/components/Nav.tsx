@@ -49,8 +49,9 @@ export default function Nav() {
         {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-7">
           {[
-            { label: 'HOW IT WORKS', href: '#how-it-works' },
-            { label: 'LIVE FEED', href: '#live-feed' },
+            { label: 'HOW IT WORKS', href: '/#how-it-works' },
+            { label: 'LIVE FEED', href: '/#live-feed' },
+            { label: 'DOCS', href: '/docs' },
             { label: 'TRADE', href: 'https://meteora.ag', external: true },
           ].map(({ label, href, external }) => (
             <a
